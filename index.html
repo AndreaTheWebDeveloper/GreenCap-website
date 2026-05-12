@@ -655,7 +655,18 @@
 <!-- ════════════════════════════════════
      FAQ
 ════════════════════════════════════ -->
-<section id="faq" class="py-24 bg-white" x-data="{ open: null, faqs: window.faqs || [] }">
+<section id="faq" class="py-24 bg-white" x-data="{
+  open: null,
+  faqs: [
+    { q: 'Quanto durano i pannelli solari?', a: 'I pannelli fotovoltaici moderni hanno una garanzia sulla durata di 30 anni. In realtà, continuano a funzionare anche oltre: la resa diminuisce leggermente (circa lo 0,5% all\'anno), ma rimangono produttivi e utili per decenni.' },
+    { q: 'Quanta manutenzione richiede un impianto solare?', a: 'Pochissima! I pannelli solari sono progettati per essere praticamente maintenance-free. Il consiglio è un lavaggio con acqua una volta all\'anno per rimuovere polvere e sporco e mantenere l\'efficienza al massimo. Pensiamo noi a tutto.' },
+    { q: 'Cosa succede all\'energia prodotta che non uso?', a: 'L\'elettricità prodotta copre prima i tuoi consumi in tempo reale. L\'eccesso viene immagazzinato in batterie (se presenti) per usarlo di sera o nei giorni nuvolosi. Qualsiasi ulteriore surplus viene immesso in rete, permettendoti di guadagnare grazie agli incentivi GSE.' },
+    { q: 'Cos\'è una comunità energetica?', a: 'Una comunità energetica è un gruppo di persone (vicini di casa, aziende) che condividono la produzione e il consumo di energia rinnovabile. I partecipanti possono comprare e vendere elettricità tra loro a condizioni molto più vantaggiose rispetto al mercato tradizionale.' },
+    { q: 'Quali incentivi statali sono disponibili?', a: 'Attualmente sono disponibili la detrazione IRPEF al 50% in 10 anni, l\'aliquota IVA agevolata al 10% per uso residenziale, e gli incentivi GSE per la vendita dell\'energia in rete. Contattaci per una consulenza aggiornata sulla tua situazione.' },
+    { q: 'In quanto tempo si recupera l\'investimento?', a: 'Dipende dalle dimensioni dell\'impianto, dai tuoi consumi e dagli incentivi disponibili. In media, un impianto residenziale si ripaga in 5-7 anni. Dopodiché, per 20+ anni produci energia praticamente gratis.' },
+    { q: 'Serve il permesso del Comune per installare i pannelli?', a: 'Nella maggior parte dei casi no. Gli impianti fotovoltaici su abitazioni private rientrano in edilizia libera e non richiedono permessi particolari. Ci occupiamo noi di tutte le pratiche burocratiche necessarie.' }
+  ]
+}">
   <div class="max-w-3xl mx-auto px-6 lg:px-12">
 
     <div class="text-center mb-16 reveal">
