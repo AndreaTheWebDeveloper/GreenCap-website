@@ -677,7 +677,7 @@
     <div class="space-y-4">
 
       <template x-for="(faq, i) in faqs" :key="i">
-        <div class="reveal border border-gray-200 rounded-2xl overflow-hidden hover:border-green-300 transition-colors">
+        <div class="border border-gray-200 rounded-2xl overflow-hidden hover:border-green-300 transition-colors">
           <button @click="open === i ? open = null : open = i"
                   class="w-full flex items-center justify-between p-6 text-left">
             <span class="font-display font-semibold text-gray-900 pr-8" x-text="faq.q"></span>
