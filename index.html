@@ -792,47 +792,47 @@
         <form id="quote-form" class="grid md:grid-cols-2 gap-5" onsubmit="handleSubmit(event)">
           <div>
             <label class="block text-green-200 text-sm font-medium mb-2">Nome e Cognome *</label>
-            <input type="text" required placeholder="Mario Rossi"
+            <input type="text" name="nome" required placeholder="Mario Rossi"
                    class="form-input w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl px-4 py-3 text-sm"/>
           </div>
           <div>
             <label class="block text-green-200 text-sm font-medium mb-2">Telefono *</label>
-            <input type="tel" required placeholder="+39 333 000 0000"
+            <input type="tel" name="telefono" required placeholder="+39 333 000 0000"
                    class="form-input w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl px-4 py-3 text-sm"/>
           </div>
           <div>
             <label class="block text-green-200 text-sm font-medium mb-2">Email *</label>
-            <input type="email" required placeholder="mario@email.com"
+            <input type="email" name="email" required placeholder="mario@email.com"
                    class="form-input w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl px-4 py-3 text-sm"/>
           </div>
           <div>
             <label class="block text-green-200 text-sm font-medium mb-2">Comune *</label>
-            <input type="text" required placeholder="Roma, Ciampino…"
+            <input type="text" name="comune" required placeholder="Roma, Ciampino…"
                    class="form-input w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl px-4 py-3 text-sm"/>
           </div>
           <div>
             <label class="block text-green-200 text-sm font-medium mb-2">Tipo di immobile</label>
-            <select class="form-input w-full bg-white/10 border border-white/20 text-white rounded-xl px-4 py-3 text-sm appearance-none">
+            <select name="tipo" class="form-input w-full bg-white/10 border border-white/20 text-white rounded-xl px-4 py-3 text-sm appearance-none">
               <option value="" class="text-gray-900">Seleziona…</option>
-              <option value="casa" class="text-gray-900">Casa privata / Villa</option>
-              <option value="appartamento" class="text-gray-900">Appartamento / Condominio</option>
-              <option value="azienda" class="text-gray-900">Azienda / Capannone</option>
-              <option value="altro" class="text-gray-900">Altro</option>
+              <option value="Casa privata / Villa" class="text-gray-900">Casa privata / Villa</option>
+              <option value="Appartamento / Condominio" class="text-gray-900">Appartamento / Condominio</option>
+              <option value="Azienda / Capannone" class="text-gray-900">Azienda / Capannone</option>
+              <option value="Altro" class="text-gray-900">Altro</option>
             </select>
           </div>
           <div>
             <label class="block text-green-200 text-sm font-medium mb-2">Bolletta mensile media (€)</label>
-            <select class="form-input w-full bg-white/10 border border-white/20 text-white rounded-xl px-4 py-3 text-sm appearance-none">
+            <select name="bolletta" class="form-input w-full bg-white/10 border border-white/20 text-white rounded-xl px-4 py-3 text-sm appearance-none">
               <option value="" class="text-gray-900">Seleziona…</option>
-              <option value="0-100" class="text-gray-900">Meno di €100</option>
-              <option value="100-200" class="text-gray-900">€100 – €200</option>
-              <option value="200-400" class="text-gray-900">€200 – €400</option>
-              <option value="400+" class="text-gray-900">Più di €400</option>
+              <option value="Meno di €100" class="text-gray-900">Meno di €100</option>
+              <option value="€100 – €200" class="text-gray-900">€100 – €200</option>
+              <option value="€200 – €400" class="text-gray-900">€200 – €400</option>
+              <option value="Più di €400" class="text-gray-900">Più di €400</option>
             </select>
           </div>
           <div class="md:col-span-2">
             <label class="block text-green-200 text-sm font-medium mb-2">Note aggiuntive</label>
-            <textarea rows="3" placeholder="Hai domande particolari? Scrivici qui…"
+            <textarea name="note" rows="3" placeholder="Hai domande particolari? Scrivici qui…"
                       class="form-input w-full bg-white/10 border border-white/20 text-white placeholder-white/40 rounded-xl px-4 py-3 text-sm resize-none"></textarea>
           </div>
           <div class="md:col-span-2 flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -1079,21 +1079,45 @@ const countObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.stat-number').forEach(el => countObserver.observe(el));
 
 // ── Form submit ──
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   const form = document.getElementById('quote-form');
   const success = document.getElementById('form-success');
+  const btn = form.querySelector('button[type="submit"]');
 
-  // Gather form data (in production, POST to your backend/Formspree)
+  // Disable button to prevent double submission
+  btn.disabled = true;
+  btn.textContent = 'Invio in corso…';
+
   const data = new FormData(form);
-  console.log('Form submitted:', Object.fromEntries(data));
+  const payload = {
+    nome:     data.get('nome'),
+    telefono: data.get('telefono'),
+    email:    data.get('email'),
+    comune:   data.get('comune'),
+    tipo:     data.get('tipo'),
+    bolletta: data.get('bolletta'),
+    note:     data.get('note'),
+  };
 
-  // Show success state
-  form.style.display = 'none';
-  success.classList.remove('hidden');
+  try {
+    const res = await fetch('https://greencap-form.andreagionix.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
 
-  // Optional: send to Formspree or email service
-  // fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body: data });
+    if (!res.ok) throw new Error('Errore server');
+
+    // Show success state
+    form.style.display = 'none';
+    success.classList.remove('hidden');
+
+  } catch (err) {
+    btn.disabled = false;
+    btn.innerHTML = 'Invia Richiesta <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    alert('Si è verificato un errore durante l\'invio. Riprova o contattaci direttamente al +39 338 247 8630.');
+  }
 }
 </script>
 
